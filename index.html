@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0,user-scalable=no" id="viewport" />
+	<link rel="stylesheet" type="text/css" href="css/index.css">
+	<title></title>
+</head>
+
+<body>
+<!-- app -->
+<div id="app">
+	<div id="show" >
+		<img src="img/51.png" alt="" @click="hidetop">
+		<p></p>
+		<div class="btn"><button>注册</button><button>登录</button></div>
+		<ul>
+			<a href="#/new"><li>最新<span>></span></li></a>
+			<a href="#/detail"><li>热门<span>></span></li></a>
+			<a href="#/find"><li>发现<span>></span></li></a>
+		</ul>
+		<p class="span"><span>访问电脑版</span><span>下载客户端</span></p>	
+	</div>
+
+	<header class="header">
+	<span class="gotop" @click="top" v-show="topshow">返回顶部</span>
+		<a href="#/find" class="header-logo" @click="showhome"></a>
+		<span>花瓣</span>
+		<input type="text" class="ser" placeholder="请输入你搜索的内容" @keydown.enter='search'>
+		<span class="header-menu" @click='showtop'></span>
+		<span class='header-search' @click="block"></span>
+	</header>
+	<component v-bind:is="view" :firedata="searchData" :fireval="val"></component>
+</div>
+<!-- find -->
+<script type="text/template" id="tpl-find">
+	<div>
+	<section class="home" >
+		<div class="content">
+			<p class='menu' @click="showtop" ></p>
+			<p class='logo'></p>
+			<p class='title'></p>
+			<input type="text" class='search' placeholder="请输入你喜欢的关键词" @keydown.enter="sear">
+			<i @click='clicksear'></i>
+			<p class='up' @click="toup"></p>
+		</div>
+	</section>
+	<section class="find" v-show="isShow">
+		<p>大家正在关注</p>
+		<ul class="nav">
+			<li><a href="#/new">日本包装设计</a></li>
+			<li><a href="#/new">婚礼布置</a></li>
+			<li><a href="#/new">微距摄影</a></li>
+			<li><a href="#/new">名片设计</a></li>
+			<li><a href="#/new">荷花</a></li>
+			<li><a href="#/new">北欧风格家具</a></li>
+		</ul>
+		<p>为你推荐</p>
+		<div class="lists">
+			<div class="list" v-for="item in list">
+				<a href="#/detail"><img :src="'img/'+item.u1" alt=""></a>
+				<div class="text"><p>{{item.t1}}</p>
+				<span>{{item.c1 | cj}}</span>
+				<span>{{item.f1 | fs}}</span></div>
+				<div class="main">
+				<a href="#/new"><img :src="'img/'+item.u2" alt=""><p>{{item.t2}}</p>
+				<span>{{item.c2 | cj}}</span>
+				<span>{{item.f2 | fs}}</span>
+				<strong>画板</strong>
+				</a>
+				<a href="#/new"><img :src="'img/'+item.u3" alt=""><p>{{item.t3}}</p>
+				<span>{{item.c3 | cj}}</span>
+				<span>{{item.f3 | fs}}</span>
+				<strong>人物</strong>
+				</a>
+				</div>
+			</div>
+			<p class="more" @click="more" v-if="show">加载更多</p>
+		</div>
+	</section>
+	</div>
+</script>
+<!-- new -->
+<script type="text/template" id="tpl-new">
+	<section class="new" >
+		<div class="content">
+			<p>{{doc}}	<span class="go-back" @click="showlist"><span class="arrow"></span><span class="black"></span></span> 
+			</p>
+			<ul class="ul" @click="goto">
+				<li>全部</li>
+				<li>人物</li>
+				<li>插画/漫画</li>
+				<li>家居/家装</li>
+				<li>女装/搭配</li>
+				<li>男士/风尚</li>
+				<li>婚礼</li>
+				<li>工业设计</li>
+				<li>摄影</li>
+				<li>造型/美妆</li>
+				<li>美食</li>
+				<li>手工/布艺</li>
+				<li>健身/舞蹈</li>
+				<li>儿童</li>
+				<li>宠物</li>
+				<li>美图</li>
+				<li>明星</li>
+				<li>美女</li>
+				<li>礼物</li>
+				<li>极客</li>
+				<li>动漫</li>
+			</ul>
+
+			<div class="lists">
+				<div class="lefts">
+				<div class="left" v-for="item in newlist" v-show='item.pd'>
+				<div >
+					<a href="#detail"><img :src="'img/'+item.u1" alt=""><span>{{item.show}}</span></a>
+					<p>
+						<span class="th"><a href="#detail"><img :src="'img/'+item.u2" alt=""></a></span>
+						<span class="tt"><a href="#/detail">{{item.name}}</a>&nbsp;&nbsp;&nbsp;采集到<a href="#/detail">{{item.type}}</a></span>
+					</p>
+					</div>
+				</div>
+				</div>
+				<div class="rights">
+				<div class="right" v-for="item in newlist" v-show='!item.pd'>
+					<a href="#detail"><img :src="'img/'+item.u1" alt=""><span>{{item.show}}</span></a>
+					<p>
+						<span class="th"><a href="#detail"><img :src="'img/'+item.u2" alt=""></a></span>
+						<span class="tt"><a href="#/detail">{{item.name}}</a>&nbsp;&nbsp;&nbsp;采集到<a href="#/detail">{{item.type}}</a></span>
+					</p>
+					</div>
+				</div>
+				</div>
+			</div>
+		</div>
+	</section>
+</script>
+	<!-- detail -->
+<script type="text/template" id="tpl-detail">
+	<section class="detail">
+		<div class="top">
+			<a><img src="img/40.jpg" alt="" class="img"></a>
+		<div class="btn"><button>Z  收藏</button>
+		<button>❤  喜欢</button>
+		<button>...  更多</button></div>
+		<p class="name"><img src="img/35.jpg" alt=""><span class="th">去时天山雪满路</span><span class="tr">于  1 小时前 采集</span></p>
+		<p class="more">jest enjoy it <span>&gt;</span></p>
+		<p class="img">
+			<img src="img/35.jpg" alt="">
+			<img src="img/36.jpg" alt="">
+			<img src="img/37.jpg" alt="">
+			<img src="img/38.jpg" alt="">
+			<img src="img/20.png" alt="">
+		</p>
+		<p class="say"><img src="img/41.png" alt=""><textarea cols="20" rows="2"></textarea></p>
+		<p class="sort" @click="sort">
+			<span id="love">喜欢</span><span id='back'>收藏</span>
+		</p>
+		</div>
+		<div class="lists">
+				<div class="lefts">
+				<div class="left" v-for="item in list" v-show="item.pd">
+					<a href="#detail"><img :src="'img/'+item.u1" alt=""><span>{{item.show}}</span></a>
+					<p>
+						<span class="th"><a href="#detail"><img :src="'img/'+item.u2" alt=""></a></span>
+						<span class="tt"><a href="#/detail">{{item.name}}</a>&nbsp;&nbsp;&nbsp;采集到<a href="#/detail" class="px">{{item.type}}&emsp;&emsp;&emsp;&emsp;&emsp;❤&nbsp;{{item.love}}&nbsp;收藏&nbsp;{{item.back}}</a></span>
+					</p>
+				</div>
+				</div>
+				<div class="rights">
+				<div class="right" v-for="item in list" v-show="!item.pd">
+					<a href="#detail"><img :src="'img/'+item.u1" alt=""><span>{{item.show}}</span></a>
+					<p>
+						<span class="th"><a href="#detail"><img :src="'img/'+item.u2" alt=""></a></span>
+						<span class="tt"><a href="#/detail">{{item.name}}</a>&nbsp;&nbsp;&nbsp;采集到<a href="#/detail" class="px">{{item.type}}&emsp;&emsp;&emsp;&emsp;&emsp;❤&nbsp;{{item.love}}&nbsp;收藏&nbsp;{{item.back}}</a></span>
+					</p>
+				</div>
+				</div>
+			</div>
+		</div>
+	</section>
+</script>
+<!-- 引入库文件 -->
+<script type="text/javascript" src="lib/underscore.js"></script>
+<script type="text/javascript" src="lib/jquery.js"></script>
+<script type="text/javascript" src="lib/vue2.js"></script>
+<script type="text/javascript" src="index.js"></script>
+</body>
+</html>
